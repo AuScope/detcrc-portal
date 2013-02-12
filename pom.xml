@@ -9,8 +9,8 @@
     <description>DET*CRC flagship demonstration tool</description>
     <url>http://detcrc.com.au/</url>
     <scm>
-        <connection>scm:svn:https://svn.auscope.org/subversion/AuScopePortal/detcrc-Portal/trunk</connection>
-        <developerConnection>scm:svn:https://svn.auscope.org/subversion/AuScopePortal/detcrc-Portal/trunk</developerConnection>
+        <connection>scm:svn:https://svn.auscope.org/subversion/AuScopePortal/detcrc-portal/trunk</connection>
+        <developerConnection>scm:svn:https://svn.auscope.org/subversion/AuScopePortal/detcrc-portal/trunk</developerConnection>
     </scm>
     <!-- Build Configuration -->
     <organization>
@@ -29,7 +29,7 @@
         <geotools.version>2.6.5</geotools.version>
     </properties>
     <build>
-        <finalName>detcrc-Portal</finalName>
+        <finalName>detcrc-portal</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
