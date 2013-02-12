@@ -1,43 +1,35 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.auscope.portal</groupId>
-    <artifactId>AuScope-Portal</artifactId>
+    <groupId>org.detcrc.portal</groupId>
+    <artifactId>DETCRC-Portal</artifactId>
     <packaging>war</packaging>
     <version>2.10.0</version>
-    <name>AuScope-Portal</name>
-    <description>AuScopes flagship demonstration tool</description>
-    <url>http://portal.auscope.org</url>
-    <issueManagement>
-        <system>Jira</system>
-        <url>https://jira.csiro.au/browse/AUS</url>
-    </issueManagement>
-    <ciManagement>
-        <system>BuildBot</system>
-        <url>http://geobuilder.arrc.csiro.au</url>
-    </ciManagement>
+    <name>DETCRC-Portal</name>
+    <description>DET*CRC flagship demonstration tool</description>
+    <url>http://detcrc.com.au/</url>
     <scm>
-        <connection>scm:svn:https://svn.auscope.org/subversion/AuScopePortal/AuScope-Portal/trunk</connection>
-        <developerConnection>scm:svn:https://svn.auscope.org/subversion/AuScopePortal/AuScope-Portal/trunk</developerConnection>
+        <connection>scm:svn:https://svn.auscope.org/subversion/AuScopePortal/detcrc-Portal/trunk</connection>
+        <developerConnection>scm:svn:https://svn.auscope.org/subversion/AuScopePortal/detcrc-Portal/trunk</developerConnection>
     </scm>
     <!-- Build Configuration -->
     <organization>
-        <name>AuScope</name>
-        <url>http://www.auscope.org</url>
+        <name>DETCRC</name>
+        <url>http://detcrc.com.au/</url>
     </organization>
     <!-- Project properties -->
     <properties>
         <!-- stupid PMD plugin work around... -->
         <targetJdk>1.6</targetJdk>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jetty.version>6.1.25</jetty.version>
+        <jetty.version>7.4.5.v20110725</jetty.version>
         <log4j.version>1.2.16</log4j.version>
         <spring.version>3.0.5.RELEASE</spring.version>
         <spring.security.version>3.0.5.RELEASE</spring.security.version>
         <geotools.version>2.6.5</geotools.version>
     </properties>
     <build>
-        <finalName>AuScope-Portal</finalName>
+        <finalName>detcrc-Portal</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -118,20 +110,39 @@
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
-                <artifactId>maven-jetty-plugin</artifactId>
+                <artifactId>jetty-maven-plugin</artifactId>
                 <version>${jetty.version}</version>
+				<configuration>
+					<loginServices>
+						<loginService implementation="org.eclipse.jetty.security.HashLoginService">
+							<name>AuScope Portal</name>
+							<config>${basedir}/src/test/resources/jetty-test-realm.properties</config>
+						</loginService>
+					</loginServices>
+				</configuration>				
                 <dependencies>
                     <dependency>
                         <groupId>log4j</groupId>
                         <artifactId>log4j</artifactId>
                         <version>${log4j.version}</version>
                     </dependency>
-                </dependencies>
-                <configuration>
-                    <webApp>${project.build.directory}/${project.build.finalName}</webApp>
-                    <scanIntervalSeconds>9999</scanIntervalSeconds>
-                    <contextPath>/</contextPath>
-                </configuration>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-server</artifactId>
+						<version>${jetty.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-servlets</artifactId>
+						<version>${jetty.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-security</artifactId>
+						<version>${jetty.version}</version>
+					</dependency>
+				</dependencies>
+
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

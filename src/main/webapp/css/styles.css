@@ -1,4 +1,4 @@
-    body {
+﻿    body {
         margin: 0px;
         padding: 0px;
         overflow: hidden;
@@ -39,10 +39,11 @@
     #logo h1 a {
         padding: 0;
         margin: 0;
-        width: 531px;
+        width: 528px;
         height: 100px;
         display: block;
-        background: url( "../img/img-auscope-banner.gif" ) no-repeat top left;
+        background: url( "../img/det-crc-header.jpg" ) no-repeat top left;
+        background-color: #455560;
     }
 
     #logo h1 a span {
