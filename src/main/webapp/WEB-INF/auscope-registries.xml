@@ -55,6 +55,19 @@
         <constructor-arg name="serviceUrl" value="http://aster.nci.org.au/geonetwork/srv/en/csw"/>
         <constructor-arg name="recordInformationUrl" value="http://aster.nci.org.au/geonetwork/srv/en/main.home?uuid=%1$s"/>
     </bean>
+    <bean id="cswVGLProduction" class="org.auscope.portal.core.services.csw.CSWServiceItem">
+        <constructor-arg name="id" value="cswVGLProduction"/>
+        <constructor-arg name="title" value="VGL Geonetwork"/>
+        <constructor-arg name="serviceUrl" value="http://vgl.auscope.org/geonetwork/srv/en/csw"/>
+        <constructor-arg name="recordInformationUrl" value="http://vgl.auscope.org/geonetwork/srv/en/main.home?uuid=%1$s"/>
+    </bean>
+    <bean id="cswDETCRCProduction" class="org.auscope.portal.core.services.csw.CSWServiceItem">
+        <constructor-arg name="id" value="cswDETCRCProduction"/>
+        <constructor-arg name="title" value="DETCRC Geonetwork"/>
+        <constructor-arg name="serviceUrl" value="http://det-crc.csiro.au/geonetwork/srv/en/csw"/>
+        <constructor-arg name="recordInformationUrl" value="http://det-crc.csiro.au/geonetwork/srv/en/main.home?uuid=%1$s"/>
+    </bean>
+
 
 
 </beans>
