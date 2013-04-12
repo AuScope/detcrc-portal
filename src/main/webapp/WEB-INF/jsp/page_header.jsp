@@ -6,8 +6,8 @@
       </div>
       <div id="menu">
          <ul >
-            <li ><a href="http://http://detcrc.com.au/">DET*CRC<span></span></a></li>
-            <li <%if (request.getRequestURL().toString().contains("/gmap.")) {%>class="current" <%} %>><a href="gmap.html">DET*CRC Portal<span></span></a></li>
+            <li ><a href="http://http://detcrc.com.au/">DET CRC<span></span></a></li>
+            <li <%if (request.getRequestURL().toString().contains("/gmap.")) {%>class="current" <%} %>><a href="gmap.html">DET CRC Portal<span></span></a></li>
             <li <%if (request.getRequestURL().toString().contains("/links.")) {%>class="current" <%} %>><a href="links.html">Links<span></span></a></li>
          </ul>
       </div>
