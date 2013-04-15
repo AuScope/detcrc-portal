@@ -58,7 +58,7 @@
     <bean id="cswServiceList" class="java.util.ArrayList">
         <constructor-arg>
             <list>
-                <ref bean="cswAuscopeProduction" />
+                <ref bean="cswAuscopeTest" />
                 <ref bean="cswMDUProduction" />
                 <ref bean="cswAsterProduction" />
                 <ref bean="cswVGLProduction" />

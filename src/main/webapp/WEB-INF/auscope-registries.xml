@@ -64,8 +64,8 @@
     <bean id="cswDETCRCProduction" class="org.auscope.portal.core.services.csw.CSWServiceItem">
         <constructor-arg name="id" value="cswDETCRCProduction"/>
         <constructor-arg name="title" value="DETCRC Geonetwork"/>
-        <constructor-arg name="serviceUrl" value="http://det-crc.csiro.au/geonetwork/srv/en/csw"/>
-        <constructor-arg name="recordInformationUrl" value="http://det-crc.csiro.au/geonetwork/srv/en/main.home?uuid=%1$s"/>
+        <constructor-arg name="serviceUrl" value="http://det-crc.csiro.au/geonetwork/srv/eng/csw"/>
+        <constructor-arg name="recordInformationUrl" value="http://det-crc.csiro.au/geonetwork/srv/eng/main.home?uuid=%1$s"/>
     </bean>
 
 

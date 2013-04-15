@@ -306,8 +306,7 @@
                 <constructor-arg name="includeEndpoints" value="true"/>
                 <constructor-arg name="serviceEndpoints">
                     <list>
-                        <value>http://sisstest.arrc.csiro.au:8080/agos/wfs</value>
-                        <value>http://auscope-services.arrc.csiro.au:80/agos/wfs</value>
+                        <value>http://det-crc.csiro.au:80/open-data/wfs</value>
                     </list>
                 </constructor-arg>
                 <property name="relatedFeatureTypeNames">
@@ -317,9 +316,9 @@
                 </property>
             </bean>
         </constructor-arg>
-        <property name="name" value="University of Melbourne - MSCL"/>
-        <property name="description" value="Borehole observations made with a multi-sensor core logger."/>
-        <property name="group" value="NVCL Research Data"/>
+        <property name="name" value="Brukunga and Yorke Boreholes"/>
+        <property name="description" value="DET CRC Brukunga and Yorke Boreholes"/>
+        <property name="group" value="DET CRC Research Data"/>
         <property name="proxyUrl" value="doBoreholeFilter.do"/>
         <property name="proxyCountUrl" value=""/>
         <property name="iconUrl" value="http://maps.google.com/mapfiles/kml/paddle/ltblu-blank.png"/>

@@ -158,7 +158,7 @@ Ext.define('auscope.layer.querier.wfs.knownlayerfactories.MSCLFactory', {
             parentOnlineResource) {
         return Ext.create('portal.layer.querier.BaseComponent', {
             border : false,
-            tabTitle : 'MSCL Data',
+            tabTitle : 'Petrophysics',
             items : [ {
                 xtype : 'fieldset',
                 title : 'Petrophysical Observations',
