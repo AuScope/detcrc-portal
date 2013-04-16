@@ -2,7 +2,9 @@ package org.auscope.portal.server.web.service;
 
 import java.util.List;
 
+import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.auscope.portal.core.server.http.HttpServiceCaller;
@@ -38,6 +40,7 @@ public class MineralOccurrenceService extends BaseWFSService {
     public static final String MINERAL_OCCURRENCE_FEATURE_TYPE = "gsml:MappedFeature";
     public static final String MINING_ACTIVITY_FEATURE_TYPE = "er:MiningFeatureOccurrence";
 
+
     // ----------------------------------------------------- Instance variables
 
     private MineralOccurrencesResponseHandler mineralOccurrencesResponseHandler;
@@ -53,6 +56,7 @@ public class MineralOccurrenceService extends BaseWFSService {
         super(httpServiceCaller, methodMaker);
         this.mineralOccurrencesResponseHandler = respHandler;
         this.gmlToKml = gmlToKml;
+
     }
 
     /**
@@ -61,15 +65,13 @@ public class MineralOccurrenceService extends BaseWFSService {
      * @param bbox [Optional] the spatial bounds to constrain the result set
      * @return
      */
-    private String generateFilterString(IFilter filter, FilterBoundingBox bbox) {
+    public static String generateFilterString(IFilter filter, FilterBoundingBox bbox) {
         String filterString = null;
         if (bbox == null) {
             filterString = filter.getFilterStringAllRecords();
         } else {
             filterString = filter.getFilterStringBoundingBox(bbox);
         }
-
-        log.trace(filterString);
 
         return filterString;
     }

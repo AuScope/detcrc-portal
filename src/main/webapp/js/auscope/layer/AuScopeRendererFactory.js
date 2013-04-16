@@ -8,13 +8,13 @@ Ext.define('auscope.layer.AuScopeRendererFactory', {
     /**
      * Creates a new instance of renderer based on the specified values
      */
-    _generateRenderer : function(wfsResources, wmsResources, proxyUrl, proxyCountUrl, iconUrl, iconSize, iconAnchor) {
+    _generateRenderer : function(wfsResources, wmsResources, irisResources, proxyUrl, proxyCountUrl, iconUrl, iconSize, iconAnchor,polygonColor) {
         var icon = Ext.create('portal.map.Icon', {
             url : iconUrl,
-            width : iconSize ? iconSize.width : 16,
-            height : iconSize ? iconSize.height : 16,
-            anchorOffsetX : iconAnchor ? iconAnchor.x : 0,
-            anchorOffsetY : iconAnchor ? iconAnchor.y : 0
+            width : iconSize ? iconSize.width : 32,
+            height : iconSize ? iconSize.height : 32,
+            anchorOffsetX : iconAnchor ? iconAnchor.x : 16,
+            anchorOffsetY : iconAnchor ? iconAnchor.y : 32
         });
 
         if(wmsResources.length > 0 && wfsResources.length > 0){
@@ -33,10 +33,18 @@ Ext.define('auscope.layer.AuScopeRendererFactory', {
                 proxyUrl : proxyUrl ? proxyUrl : 'getAllFeatures.do',
                 proxyCountUrl : proxyCountUrl
             });
-        }else{
+        } else if (irisResources.length > 0) {
+            return Ext.create('portal.layer.renderer.iris.IRISRenderer', {
+                map : this.map,
+                icon : icon,
+                proxyUrl : proxyUrl,
+                proxyCountUrl : proxyCountUrl
+            });
+        } else {
             return Ext.create('portal.layer.renderer.csw.CSWRenderer', {
                 map : this.map,
-                icon : icon
+                icon : icon,
+                polygonColor: polygonColor
             });
         }
     },
@@ -49,10 +57,10 @@ Ext.define('auscope.layer.AuScopeRendererFactory', {
 
         var wmsResources = portal.csw.OnlineResource.getFilteredFromArray(allOnlineResources, portal.csw.OnlineResource.WMS);
         var wfsResources = portal.csw.OnlineResource.getFilteredFromArray(allOnlineResources, portal.csw.OnlineResource.WFS);
-        var wcsResources = portal.csw.OnlineResource.getFilteredFromArray(allOnlineResources, portal.csw.OnlineResource.WCS);
+        var irisResources = portal.csw.OnlineResource.getFilteredFromArray(allOnlineResources, portal.csw.OnlineResource.IRIS);
 
-        return this._generateRenderer(wfsResources, wmsResources, knownLayer.get('proxyUrl'), knownLayer.get('proxyCountUrl'),
-                knownLayer.get('iconUrl'), knownLayer.get('iconSize'), knownLayer.get('iconAnchor'));
+        return this._generateRenderer(wfsResources, wmsResources, irisResources, knownLayer.get('proxyUrl'), knownLayer.get('proxyCountUrl'),
+                knownLayer.get('iconUrl'), knownLayer.get('iconSize'), knownLayer.get('iconAnchor'),knownLayer.get('polygonColor'));
     },
 
     /**
@@ -63,8 +71,8 @@ Ext.define('auscope.layer.AuScopeRendererFactory', {
 
         var wmsResources = portal.csw.OnlineResource.getFilteredFromArray(allOnlineResources, portal.csw.OnlineResource.WMS);
         var wfsResources = portal.csw.OnlineResource.getFilteredFromArray(allOnlineResources, portal.csw.OnlineResource.WFS);
-        var wcsResources = portal.csw.OnlineResource.getFilteredFromArray(allOnlineResources, portal.csw.OnlineResource.WCS);
+        var irisResources = portal.csw.OnlineResource.getFilteredFromArray(allOnlineResources, portal.csw.OnlineResource.IRIS);
 
-        return this._generateRenderer(wfsResources, wmsResources, undefined, undefined, undefined, undefined, undefined);
+        return this._generateRenderer(wfsResources, wmsResources, irisResources, undefined, undefined, undefined, undefined, undefined,undefined);
     }
 });

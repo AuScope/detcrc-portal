@@ -1,34 +1,16 @@
 package org.auscope.portal.mscl;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.httpclient.ConnectTimeoutException;
-import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpMethodBase;
 import org.auscope.portal.core.server.http.HttpServiceCaller;
 import org.auscope.portal.core.services.BaseWFSService;
 import org.auscope.portal.core.services.methodmakers.WFSGetFeatureMethodMaker;
 import org.auscope.portal.core.services.methodmakers.WFSGetFeatureMethodMaker.ResultType;
-import org.auscope.portal.core.services.namespaces.IterableNamespace;
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.spatial.Intersects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * This class is a specialisation of BaseWFSService. Its purpose is to allow access to MSCL's
@@ -88,26 +70,31 @@ public class MSCLWFSService extends BaseWFSService {
 	        final String boreholeHeaderId,
 	        final String startDepth,
 	        final String endDepth) throws ConnectException, ConnectTimeoutException, UnknownHostException, Exception {
+	    	    
+	    // Remove the first part of the id.; we need to use the numerical part when looking up the observations:
+	    String boreholeHeaderIdDigitsOnly = boreholeHeaderId.replaceFirst("borehole\\.", ""); 
 
-        String filterString = String.format( 
-            "<Filter>" +
-            "   <PropertyIs>" +
-            "       <PropertyName>mscl:borehole_header_id</PropertyName>" +
-            "       <Literal>%s</Literal>" +
-            "   </PropertyIs>" +
-            "   <PropertyIsBetween>" +
-            "       <PropertyName>mscl:depth</PropertyName>" +
-            "       <LowerBoundary>" +
-            "           <Literal>%s</Literal>" +
-            "       </LowerBoundary>" +
-            "       <UpperBoundary>" +
-            "           <Literal>%s</Literal>" +
-            "       </UpperBoundary>" +
-            "   </PropertyIsBetween>" +
-            "</Filter>", 
-            boreholeHeaderId,
-            startDepth,
-            endDepth);
+	    String filterString = String.format( 
+	            "<Filter>" +
+	            "    <And>" +
+	            "        <PropertyIsEqualTo>" +
+	            "            <PropertyName>mscl:borehole_header_id</PropertyName>" +
+	            "            <Literal>%s</Literal>" +
+	            "        </PropertyIsEqualTo>" +
+	            "        <PropertyIsBetween>" +
+	            "            <PropertyName>mscl:depth</PropertyName>" +
+	            "            <LowerBoundary>" +
+	            "                <Literal>%s</Literal>" +
+	            "            </LowerBoundary>" +
+	            "            <UpperBoundary>" +
+	            "                <Literal>%s</Literal>" +
+	            "            </UpperBoundary>" +
+	            "        </PropertyIsBetween>" +
+	            "    </And>" +
+	            "</Filter>", 
+	            boreholeHeaderIdDigitsOnly,
+	            startDepth,
+	            endDepth);
 
 	    HttpMethodBase method = this.generateWFSRequest(
 	        serviceUrl,

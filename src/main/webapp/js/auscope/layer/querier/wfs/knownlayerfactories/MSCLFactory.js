@@ -4,9 +4,16 @@
 Ext.require('Ext.chart.*');
 Ext.require([ 'Ext.Window', 'Ext.fx.target.Sprite', 'Ext.layout.container.Fit', 'Ext.window.MessageBox' ]);
 
+
+
+
 function drawGraph(serviceUrl, boreholeHeaderId, startDepth, endDepth, observationsToReturn, maskedElement) {
     // I want this to always be an array, even if only has one element.
     observationsToReturn = [].concat(observationsToReturn);
+
+    firstInitialChartWidth = 381;
+    initialChartWidth = 350;
+    initialChartHeight = 500;
 
     // Define the model:
     Ext.define('DynamicModel', {
@@ -82,8 +89,8 @@ function drawGraph(serviceUrl, boreholeHeaderId, startDepth, endDepth, observati
 
                 // Create the array of charts
                 charts[i] = Ext.create('Ext.chart.Chart', {
-                    height : 700,
-                    width : first ? 400 : 369, // The first chart is slightly wider to accommodate its yAxis label.
+                    height : initialChartHeight,
+                    width : first ? firstInitialChartWidth : initialChartWidth, // The first chart is slightly wider to accommodate its y-axis label.
                     shadow : false,
                     store : store,
                     axes : [ {
@@ -107,7 +114,9 @@ function drawGraph(serviceUrl, boreholeHeaderId, startDepth, endDepth, observati
                         type : 'Numeric',
                         position : 'top',
                         fields : [ observationsToReturn[i] ],
-                        minorTickSteps : 1
+                        minorTickSteps : 1,
+						minimum: (Ext.mean(observationsToReturn[i]) - (3* Math.sqrt(variance(arr)))),
+						maximum: (Ext.mean(observationsToReturn[i]) + (3* Math.sqrt(variance(arr)))),
                     } ],
                     series : [ {
                         type : 'line',
@@ -121,15 +130,46 @@ function drawGraph(serviceUrl, boreholeHeaderId, startDepth, endDepth, observati
                 })
             }
 
-            Ext.create('Ext.Window', {
+            var graphWindow = Ext.create('Ext.Window', {
                 border : true,
                 layout : 'hbox',
-                resizable : false,
+                resizable : true,
                 modal : true,
                 plain : false,
                 title : 'Changes to ' + windowTitle + ' over Depth',
-                items : charts
+                items : charts,
+                scope : this,
+                listeners : {
+                    resize : function(me, width, height, oldWidth, oldHeight, eOpts) {
+                        // When the user resizes the window we need to resize the charts
+                        // within it, too.
+                        var differenceInHeight = height - (typeof(oldHeight) === 'undefined' ? height : oldHeight);
+                        if (differenceInHeight !== 0) {
+                            for (var i = 0; i < me.items.items.length; i++) {
+                                me.items.items[i].setHeight(me.items.items[i].height + differenceInHeight);
+                            }
+                        }
+
+                        var differenceInWidth = width - (typeof(oldWidth) === 'undefined' ? width : oldWidth);
+                        if (differenceInWidth !== 0) {
+                            differenceInWidth = Math.floor(differenceInWidth / me.items.items.length);
+                            for (var i = 0; i < me.items.items.length; i++) {
+                                me.items.items[i].setWidth(me.items.items[i].width + differenceInWidth);
+                            }
+                        }
+                    }
+                }
             }).show();
+
+            // Make sure that the graph window isn't larger than the browser's viewport:
+            var viewSize = Ext.getBody().getViewSize();
+            var graphSize = graphWindow.getSize();
+            var border = 20;
+            graphSize.width = Math.min(graphSize.width, viewSize.width - border);
+            graphSize.height = Math.min(graphSize.height, viewSize.height - border);
+
+            graphWindow.setSize(graphSize);
+            graphWindow.center();
 
             // Remove the load mask once the window has been rendered:
             maskedElement.setLoading(false);
