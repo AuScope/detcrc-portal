@@ -115,8 +115,6 @@ function drawGraph(serviceUrl, boreholeHeaderId, startDepth, endDepth, observati
                         position : 'top',
                         fields : [ observationsToReturn[i] ],
                         minorTickSteps : 1,
-						minimum: (Ext.mean(observationsToReturn[i]) - (3* Math.sqrt(variance(arr)))),
-						maximum: (Ext.mean(observationsToReturn[i]) + (3* Math.sqrt(variance(arr)))),
                     } ],
                     series : [ {
                         type : 'line',
