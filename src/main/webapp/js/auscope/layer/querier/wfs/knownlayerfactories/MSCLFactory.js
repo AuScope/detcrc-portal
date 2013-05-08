@@ -175,6 +175,37 @@ function drawGraph(serviceUrl, boreholeHeaderId, startDepth, endDepth, observati
     });
 }
 
+function drawWavelet(serviceUrl, boreholeHeaderId, startDepth, endDepth, observationsToReturn, maskedElement) {
+    // I want this to always be an array, even if only has one element.
+    var observationsToReturnArray = [].concat(observationsToReturn);
+    var wavelets = [];
+    for (var i = 0; i < observationsToReturnArray.length; i++) {
+        wavelets[i] = Ext.create('Ext.Img', {
+            src: 'http://det-crc.csiro.au/cgi-bin/zoo_loader.cgi'
+                + '?ServiceProvider=&metapath=&Service=WPS&Request=Execute&Version=1.0.0'
+                + '&Identifier=BoreholeMultiscaleWavelet&DataInputs='
+                + 'boreholeId='+boreholeHeaderId
+                +';minDepth=' + startDepth
+                + ';maxDepth='+ endDepth
+                + ';propertyName=mscl:' + observationsToReturnArray[i]
+                + '&RawDataOutput=Result',
+            width: 512,
+            height: 512
+        });
+    }
+    var waveletWindow = Ext.create('Ext.Window', {
+        border : true,
+        layout : 'hbox',
+        resizable : true,
+        modal : true,
+        plain : false,
+        title : 'Multiscale Wavelet Anaysis',
+        items : wavelets,
+        scope : this,
+    }).show();
+    maskedElement.setLoading(false);
+}
+
 Ext.define('auscope.layer.querier.wfs.knownlayerfactories.MSCLFactory', {
     extend : 'portal.layer.querier.wfs.knownlayerfactories.BaseFactory',
 
@@ -260,13 +291,26 @@ Ext.define('auscope.layer.querier.wfs.knownlayerfactories.MSCLFactory', {
                         } ]
                     } ],
                     buttons : [ {
-                        text : 'Submit',
+                        text : 'Plot',
                         formBind : true, // only enabled once the form is valid
                         handler : function() {
                             var formValues = this.up('form').getForm().getValues();
                             var fieldset = this.up('fieldset');
                             fieldset.setLoading("Loading...");
                             drawGraph(parentOnlineResource.get('url'),
+                                    featureId, formValues.startDepth,
+                                    formValues.endDepth,
+                                    formValues.observationToReturn,
+                                    fieldset);
+                        }
+                    }, {
+                        text : 'Wavelet',
+                        formBind : true, // only enabled once the form is valid
+                        handler : function() {
+                            var formValues = this.up('form').getForm().getValues();
+                            var fieldset = this.up('fieldset');
+                            fieldset.setLoading("Loading...");
+                            drawWavelet(parentOnlineResource.get('url'),
                                     featureId, formValues.startDepth,
                                     formValues.endDepth,
                                     formValues.observationToReturn,
