@@ -190,13 +190,13 @@ function drawWavelet(serviceUrl, boreholeHeaderId, startDepth, endDepth, observa
                 + ';propertyName=mscl:' + observationsToReturnArray[i]
                 + '&RawDataOutput=Result',
             width: 512,
-            height: 512
+            height: 512,
+            cls: 'wavelet-image',
         });
     }
     var waveletWindow = Ext.create('Ext.Window', {
         border : true,
         layout : 'hbox',
-        resizable : true,
         modal : true,
         plain : false,
         title : 'Multiscale Wavelet Anaysis',
