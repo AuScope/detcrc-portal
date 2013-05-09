@@ -199,7 +199,7 @@ function drawWavelet(serviceUrl, boreholeHeaderId, startDepth, endDepth, observa
         layout : 'hbox',
         modal : true,
         plain : false,
-        title : 'Multiscale Wavelet Anaysis',
+        title : 'Multiscale Wavelet Analysis',
         items : wavelets,
         scope : this,
     }).show();
